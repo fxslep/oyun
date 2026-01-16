@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a1a">
+    <meta name="description" content="Neon Territories - Bilgi Tabanlı Strateji Oyunu">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Neon Territories</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- MAIN MENU SCREEN -->
+    <div id="menu-screen" class="screen active">
+        <div class="menu-container">
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <h1 class="game-logo">NEON<br><span>TERRITORIES</span></h1>
+                <p class="tagline">Bilgi ile Fethet • Strateji ile Kazan</p>
+            </div>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn primary" id="btn-vs-ai">
+                    <span class="btn-icon">🤖</span>
+                    <span class="btn-text">Yapay Zekaya Karşı</span>
+                </button>
+                <button class="menu-btn secondary" id="btn-local-multi">
+                    <span class="btn-icon">👥</span>
+                    <span class="btn-text">Yerel Çok Oyunculu</span>
+                </button>
+                <button class="menu-btn tertiary" id="btn-online" disabled>
+                    <span class="btn-icon">🌐</span>
+                    <span class="btn-text">Online (Yakında)</span>
+                </button>
+            </div>
+            
+            <div class="menu-footer">
+                <button class="icon-btn" id="btn-settings">⚙️</button>
+                <button class="icon-btn" id="btn-help">❓</button>
+            </div>
+        </div>
+        
+        <div class="animated-bg">
+            <div class="hex-float hex-1"></div>
+            <div class="hex-float hex-2"></div>
+            <div class="hex-float hex-3"></div>
+            <div class="hex-float hex-4"></div>
+            <div class="hex-float hex-5"></div>
+        </div>
+    </div>
+
+    <!-- GAME SETUP SCREEN -->
+    <div id="setup-screen" class="screen">
+        <div class="setup-container">
+            <h2 class="setup-title">Oyun Ayarları</h2>
+            
+            <div class="setup-section">
+                <label>Harita Boyutu</label>
+                <div class="option-group" id="map-size-options">
+                    <button class="option-btn" data-value="small">Küçük (7)</button>
+                    <button class="option-btn active" data-value="medium">Orta (12)</button>
+                    <button class="option-btn" data-value="large">Büyük (19)</button>
+                </div>
+            </div>
+            
+            <div class="setup-section" id="ai-difficulty-section">
+                <label>AI Zorluğu</label>
+                <div class="option-group" id="ai-difficulty-options">
+                    <button class="option-btn" data-value="easy">Acemi</button>
+                    <button class="option-btn active" data-value="medium">Dengeli</button>
+                    <button class="option-btn" data-value="hard">Zeki</button>
+                </div>
+            </div>
+            
+            <div class="setup-section" id="player-count-section" style="display:none;">
+                <label>Oyuncu Sayısı</label>
+                <div class="option-group" id="player-count-options">
+                    <button class="option-btn active" data-value="2">2 Oyuncu</button>
+                    <button class="option-btn" data-value="3">3 Oyuncu</button>
+                    <button class="option-btn" data-value="4">4 Oyuncu</button>
+                </div>
+            </div>
+            
+            <div class="setup-section">
+                <label>Soru Kategorileri</label>
+                <div class="category-grid">
+                    <button class="category-btn active" data-category="general">📚 Genel Kültür</button>
+                    <button class="category-btn active" data-category="science">🔬 Bilim</button>
+                    <button class="category-btn active" data-category="sports">⚽ Spor</button>
+                    <button class="category-btn active" data-category="entertainment">🎮 Eğlence</button>
+                    <button class="category-btn active" data-category="geography">🌍 Coğrafya</button>
+                    <button class="category-btn active" data-category="history">📜 Tarih</button>
+                </div>
+            </div>
+            
+            <div class="setup-actions">
+                <button class="menu-btn secondary" id="btn-back-menu">← Geri</button>
+                <button class="menu-btn primary" id="btn-start-game">Oyunu Başlat →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen">
+        <div class="game-hud">
+            <div class="player-info player-1-info">
+                <div class="player-avatar p1"></div>
+                <div class="player-details">
+                    <span class="player-name" id="p1-name">Oyuncu 1</span>
+                    <span class="player-regions" id="p1-regions">0 Bölge</span>
+                </div>
+            </div>
+            
+            <div class="turn-indicator">
+                <span id="turn-text">Sıra: Oyuncu 1</span>
+                <div class="turn-phase" id="turn-phase">Saldırı Seç</div>
+            </div>
+            
+            <div class="player-info player-2-info">
+                <div class="player-avatar p2"></div>
+                <div class="player-details">
+                    <span class="player-name" id="p2-name">AI</span>
+                    <span class="player-regions" id="p2-regions">0 Bölge</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-map-container">
+            <svg id="hex-map" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid meet">
+                <!-- Hexagons will be generated here -->
+            </svg>
+        </div>
+        
+        <div class="game-controls">
+            <button class="control-btn" id="btn-end-turn" disabled>Turu Bitir</button>
+            <button class="control-btn danger" id="btn-surrender">Teslim Ol</button>
+        </div>
+        
+        <div class="streak-indicator" id="streak-indicator">
+            <span class="streak-icon">🔥</span>
+            <span class="streak-count" id="streak-count">0</span>
+        </div>
+    </div>
+
+    <!-- QUESTION MODAL -->
+    <div id="question-modal" class="modal">
+        <div class="modal-content question-modal-content">
+            <div class="question-header">
+                <span class="question-category" id="q-category">Genel Kültür</span>
+                <div class="question-timer">
+                    <svg class="timer-svg" viewBox="0 0 100 100">
+                        <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                        <circle class="timer-progress" id="timer-circle" cx="50" cy="50" r="45"></circle>
+                    </svg>
+                    <span class="timer-text" id="timer-text">15</span>
+                </div>
+            </div>
+            
+            <div class="question-body">
+                <p class="question-text" id="q-text">Soru yükleniyor...</p>
+            </div>
+            
+            <div class="answer-options" id="answer-options">
+                <button class="answer-btn" data-index="0">A</button>
+                <button class="answer-btn" data-index="1">B</button>
+                <button class="answer-btn" data-index="2">C</button>
+                <button class="answer-btn" data-index="3">D</button>
+            </div>
+            
+            <div class="question-result" id="q-result">
+                <div class="result-icon"></div>
+                <p class="result-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME OVER MODAL -->
+    <div id="gameover-modal" class="modal">
+        <div class="modal-content gameover-modal-content">
+            <div class="gameover-icon" id="gameover-icon">🏆</div>
+            <h2 class="gameover-title" id="gameover-title">Zafer!</h2>
+            <p class="gameover-subtitle" id="gameover-subtitle">Tüm bölgeleri fethettiniz!</p>
+            
+            <div class="gameover-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-correct">0</span>
+                    <span class="stat-label">Doğru Cevap</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-wrong">0</span>
+                    <span class="stat-label">Yanlış Cevap</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-streak">0</span>
+                    <span class="stat-label">En Uzun Seri</span>
+                </div>
+            </div>
+            
+            <div class="gameover-actions">
+                <button class="menu-btn primary" id="btn-play-again">Tekrar Oyna</button>
+                <button class="menu-btn secondary" id="btn-main-menu">Ana Menü</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HELP MODAL -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content help-modal-content">
+            <button class="modal-close" id="btn-close-help">✕</button>
+            <h2>Nasıl Oynanır?</h2>
+            
+            <div class="help-section">
+                <h3>🎯 Amaç</h3>
+                <p>Haritadaki tüm bölgeleri ele geçirerek rakiplerini yen!</p>
+            </div>
+            
+            <div class="help-section">
+                <h3>🗺️ Saldırı</h3>
+                <p>Sahip olduğun bölgeye komşu bir bölgeye tıkla. Doğru cevap verirsen bölge senin olur!</p>
+            </div>
+            
+            <div class="help-section">
+                <h3>🔥 Seri Bonus</h3>
+                <p>Ardışık doğru cevaplar seri sayacını artırır. 3+ seri = bonus avantaj!</p>
+            </div>
+            
+            <div class="help-section">
+                <h3>⏱️ Süre</h3>
+                <p>Her soru için 15 saniye süren var. Hızlı düşün!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
